@@ -28,7 +28,16 @@ const EditForm = (props)=> {
 
     const handleCancel = (e) => {
         e.preventDefault();
-        handleEditCancel();
+        handleEditCancel(
+            axios.put(`https://localhost:5000/api/articles/${editId}`, item)
+            .then(res => {
+                props.setArticle(res.data)
+                props.history.push(`/articles/${editId}`)
+            })
+            .catch (err => {
+                console.log(err)
+            })
+        );
     }
 
     return(<FormContainer onSubmit={handleSubmit}>

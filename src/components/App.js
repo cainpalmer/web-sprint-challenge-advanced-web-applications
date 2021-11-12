@@ -1,8 +1,7 @@
 import React from 'react';
-import { Route, Redirect } from "react-router-dom";
+import { Route, Link, Switch } from "react-router-dom";
 import PrivateRoute from './PrivateRoute';
 import styled from 'styled-components';
-
 import Header from './Header';
 import LambdaHeader from './LambdaHeader';
 import View from './View';
@@ -10,15 +9,28 @@ import Login from './Login';
 import Logout from './Logout';
 
 const App = () => {
+  
   return (
     <AppContainer>
       <LambdaHeader/>
       <Header/>
+
       <RouteContainer>
-        <Route exact path="/">
-          <Login/>
-        </Route>          
+        <div className = 'App'>
+          <Switch>
+            <Route exact path = '/'>
+              <Login />
+            </Route>
+            <PrivateRoute exact path = '/view'>
+              <View />
+            </PrivateRoute>
+            <PrivateRoute exact path = '/logout'>
+              <Logout />
+            </PrivateRoute>
+          </Switch>
+        </div>
       </RouteContainer>
+
     </AppContainer>
   )
 }

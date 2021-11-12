@@ -1,10 +1,16 @@
 import axios from 'axios';
 
-const axiosWithAuth = ()=> {
-    
+const axiosWithAuth = () => {
+    return axios.create({
+        headers: {
+            authorization: localStorage.getItem('token')
+        },
+        baseURL: 'https://localhost:5000/api/articles',
+    });
 }
 
 export default axiosWithAuth;
+
 
 //Task List:
 //1. Complete axiosWithAuth

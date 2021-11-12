@@ -1,14 +1,53 @@
 import React from 'react';
 import styled from 'styled-components';
+import axiosWithAuth from '../utils/axiosWithAuth';
 
-const Login = () => {
-    
-    return(<ComponentContainer>
-        <ModalContainer>
-            <h1>Welcome to Blogger Pro</h1>
-            <h2>Please enter your account information.</h2>
-        </ModalContainer>
-    </ComponentContainer>);
+class Login extends React.Component {
+    state = {
+        credentials: {
+            username: '',
+            password: '',
+        }
+    }
+
+    handleChange = (event) => {
+        this.setState({
+            credentials: {
+                ...this.state.credentials,
+                [event.target.name]: event.target.value
+            }
+        })
+    }
+
+    login = (event) => {
+        event.preventDefault();
+        axiosWithAuth().post('https://localhost:5000/api/login', this.state.credentials)
+        .then(res => {
+            localStorage.setItem('token', res.data.token);
+            this.props.history.push('/view');
+        })
+        .catch(err => {
+            console.log(err.response.data.error);
+        })
+    }
+
+    render() {
+        return(
+            <ComponentContainer>
+                <ModalContainer>
+                    <h1>Welcome!</h1>
+                    <h2>Please Login:</h2>
+                    <div>
+                        <form onSubmit = {this.login}>
+                            <input type = 'text' name = 'username' id = 'username' value = {this.state.credentials.username} onChange = {this.handleChange} />
+                            <input type = 'password' name = 'password' id = 'password' value = {this.state.credentials.password} onChange = {this.handleChange} />
+                            <button onClick = {this.login} id = 'submit'>Login</button>
+                        </form>
+                    </div>
+                </ModalContainer>
+            </ComponentContainer>
+        )
+    }
 }
 
 export default Login;

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-
+import {Route, useParams, useHistory} from 'react-router-dom';
+import axiosWithAuth from '../utils/axiosWithAuth';
 import Article from './Article';
 import EditForm from './EditForm';
+import axios from 'axios';
 
 const View = (props) => {
     const [articles, setArticles] = useState([]);
@@ -10,9 +12,18 @@ const View = (props) => {
     const [editId, setEditId] = useState();
 
     const handleDelete = (id) => {
+        axiosWithAuth.delete(`https://localhost:5000/api/articles/${id}`)
+        .then(res => {
+            props.setArticles(res.data)
+            push('/articles')
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     const handleEdit = (article) => {
+        push(`/articles/${id}`)
     }
 
     const handleEditSelect = (id)=> {
